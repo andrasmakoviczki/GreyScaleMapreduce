@@ -6,6 +6,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -57,7 +58,7 @@ public class GreyScaleMapreduce {
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class ImgGreyMapper extends OpenCVMapper<Text, BytesWritable, Text, BytesWritable> {
+    public static class ImgGreyMapper extends Mapper<Text, BytesWritable, Text, BytesWritable> {
         //private final Logger logger = LoggerFactory.getLogger(ImgGreyMapper.class);
 
         protected void map(Text key, BytesWritable value, Context context) throws IOException, InterruptedException {
