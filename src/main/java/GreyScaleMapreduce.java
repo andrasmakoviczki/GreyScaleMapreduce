@@ -113,7 +113,7 @@ public class GreyScaleMapreduce {
             }
             logger.info("ok convert");*/
 
-            context.write(key, image2);
+            context.write(key, value);
 
         }
     }
