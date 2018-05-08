@@ -1,19 +1,14 @@
 import core.writables.BufferedImageWritable;
 import opencv.MatImageOutputFormat;
-import opencv.MatImageWritable;
 import opencv.OpenCVMapper;
-import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.*;
-
-import org.apache.hadoop.io.compress.DefaultCodec;
+import org.apache.hadoop.io.BytesWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -28,11 +23,8 @@ import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-
-import core.formats.BufferedImage.BufferedImageOutputFormat;
 
 
 /**
@@ -70,9 +62,11 @@ public class GreyScaleMapreduce {
         protected void map(Text key, BytesWritable value, Context context) throws IOException, InterruptedException {
 
             // Create input stream
+            logger.info("map1");
             ImageInputStream inputIO = ImageIO.createImageInputStream(new ByteArrayInputStream(value.getBytes()));
             BufferedImage image = null;
 
+            logger.info("ok inputio");
             try {
                 // Get the reader
                 Iterator<ImageReader> readers = ImageIO.getImageReaders(inputIO);
@@ -94,9 +88,12 @@ public class GreyScaleMapreduce {
                 inputIO.close();
             }
 
+            logger.info("ok read");
+            BufferedImageWritable image2 = new BufferedImageWritable(new BufferedImage(100,100,BufferedImage.TYPE_BYTE_GRAY));
+
             if (image != null) {
                 try {
-                    byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+                    byte [] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
                     Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
                     mat.put(0, 0, data);
 
@@ -108,13 +105,14 @@ public class GreyScaleMapreduce {
                     BufferedImage image1 = new BufferedImage(mat1.cols(), mat1.rows(), BufferedImage.TYPE_BYTE_GRAY);
                     image1.getRaster().setDataElements(0, 0, mat1.cols(), mat1.rows(), data1);
 
-                    BufferedImageWritable image2 = new BufferedImageWritable(image1);
-                    context.write(key, image2);
+                    image2 = new BufferedImageWritable(image1);
                 } catch (UnsupportedOperationException e) {
                     System.out.println("UnsupportedOperationException");
                 }
             }
+            logger.info("ok convert");
 
+            context.write(key, image2);
 
         }
     }
