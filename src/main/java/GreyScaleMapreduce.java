@@ -32,9 +32,9 @@ public class GreyScaleMapreduce {
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class ImgGreyMapper extends Mapper<LongWritable,BytesWritable,Text,BytesWritable>{
+    public static class ImgGreyMapper extends Mapper<Text,BytesWritable,Text,BytesWritable>{
 
-        protected void map(LongWritable key, BytesWritable value, Context context) throws IOException, InterruptedException {
+        protected void map(Text key, BytesWritable value, Context context) throws IOException, InterruptedException {
             /*SequenceFile.Reader reader = new SequenceFile.Reader(conf,
                     SequenceFile.Reader.file(outputPath));
 
@@ -47,10 +47,9 @@ public class GreyScaleMapreduce {
 
             IOUtils.closeStream(reader);*/
 
-            Text outKey = new Text(key.toString());
             System.out.println(key);
 
-            context.write(outKey,value);
+            context.write(key,value);
         }
     }
 }
