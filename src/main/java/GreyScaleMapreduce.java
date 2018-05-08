@@ -26,7 +26,7 @@ public class GreyScaleMapreduce {
         job.setMapperClass(ImgGreyMapper.class);
         //job.setCombinerClass();
         //job.setReducerClass();
-        job.setNumReduceTasks(0);
+        job.setNumReduceTasks(1);
 
         job.setInputFormatClass(SequenceFileInputFormat.class);
         FileInputFormat.addInputPath(job, new Path(args[0]));
