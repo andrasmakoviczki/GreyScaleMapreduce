@@ -9,6 +9,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,6 +20,8 @@ import java.io.IOException;
  * Created by AMakoviczki on 2018. 05. 08..
  */
 public class GreyScaleMapreduce {
+    private final Logger logger = LoggerFactory.getLogger(GreyScaleMapreduce.class);
+
     public static void main(String[] args) throws Exception{
         Configuration conf = new Configuration();
 
@@ -42,6 +46,7 @@ public class GreyScaleMapreduce {
     }
 
     public static class ImgGreyMapper extends Mapper<Text,BytesWritable,Text,BytesWritable>{
+        private final Logger logger = LoggerFactory.getLogger(ImgGreyMapper.class);
 
         protected void map(Text key, BytesWritable value, Context context) throws IOException, InterruptedException {
             /*SequenceFile.Reader reader = new SequenceFile.Reader(conf,
@@ -56,7 +61,7 @@ public class GreyScaleMapreduce {
 
             IOUtils.closeStream(reader);*/
 
-            System.out.println(key);
+            logger.info(key.toString());
 
             context.write(key,value);
         }
