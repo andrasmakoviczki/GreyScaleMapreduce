@@ -63,7 +63,8 @@ public class GreyScaleMapreduce {
 
             // Create input stream
             logger.info("map1");
-            ImageInputStream inputIO = ImageIO.createImageInputStream(new ByteArrayInputStream(value.getBytes()));
+            BufferedImageWritable image2 = new BufferedImageWritable(new BufferedImage(100,100,BufferedImage.TYPE_BYTE_GRAY));
+            /*ImageInputStream inputIO = ImageIO.createImageInputStream(new ByteArrayInputStream(value.getBytes()));
             BufferedImage image = null;
 
             logger.info("ok inputio");
@@ -89,7 +90,6 @@ public class GreyScaleMapreduce {
             }
 
             logger.info("ok read");
-            BufferedImageWritable image2 = new BufferedImageWritable(new BufferedImage(100,100,BufferedImage.TYPE_BYTE_GRAY));
 
             if (image != null) {
                 try {
@@ -110,7 +110,7 @@ public class GreyScaleMapreduce {
                     System.out.println("UnsupportedOperationException");
                 }
             }
-            logger.info("ok convert");
+            logger.info("ok convert");*/
 
             context.write(key, image2);
 
