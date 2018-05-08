@@ -9,6 +9,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +36,17 @@ public class GreyScaleMapreduce {
         job.setInputFormatClass(SequenceFileInputFormat.class);
         FileInputFormat.addInputPath(job, new Path(args[0]));
 
-        job.setOutputFormatClass(SequenceFileOutputFormat.class);
+        job.setOutputFormatClass(TextOutputFormat.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(BytesWritable.class);
-        FileOutputFormat.setCompressOutput(job, true);
-        FileOutputFormat.setOutputCompressorClass(job, DefaultCodec.class);
+        job.setOutputValueClass(Text.class);
+        //FileOutputFormat.setCompressOutput(job, true);
+        //FileOutputFormat.setOutputCompressorClass(job, DefaultCodec.class);
         FileOutputFormat.setOutputPath(job,new Path(args[1]));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class ImgGreyMapper extends Mapper<Text,BytesWritable,Text,BytesWritable>{
+    public static class ImgGreyMapper extends Mapper<Text,BytesWritable,Text,Text>{
         private final Logger logger = LoggerFactory.getLogger(ImgGreyMapper.class);
 
         protected void map(Text key, BytesWritable value, Context context) throws IOException, InterruptedException {
@@ -61,9 +62,9 @@ public class GreyScaleMapreduce {
 
             IOUtils.closeStream(reader);*/
 
-            logger.info(key.toString());
+            //logger.info(key.toString());
 
-            context.write(key,value);
+            context.write(key,key);
         }
     }
 }
