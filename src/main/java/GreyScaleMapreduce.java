@@ -23,7 +23,7 @@ public class GreyScaleMapreduce {
         //job.setCombinerClass();
         //job.setReducerClass();
 
-        job.setOutputKeyClass(Text.class);
+        job.setOutputKeyClass(LongWritable.class);
         job.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -32,9 +32,9 @@ public class GreyScaleMapreduce {
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class ImgGreyMapper extends Mapper<Text,Text,Text,Text>{
+    public static class ImgGreyMapper extends Mapper<LongWritable,Text,LongWritable,Text>{
 
-        protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+        protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             /*SequenceFile.Reader reader = new SequenceFile.Reader(conf,
                     SequenceFile.Reader.file(outputPath));
 
