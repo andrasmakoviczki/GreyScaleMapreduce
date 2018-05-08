@@ -32,7 +32,7 @@ import java.util.Iterator;
  * Created by AMakoviczki on 2018. 05. 08..
  */
 public class GreyScaleMapreduce {
-    private final Logger logger = LoggerFactory.getLogger(GreyScaleMapreduce.class);
+    //private final Logger logger = LoggerFactory.getLogger(GreyScaleMapreduce.class);
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
@@ -58,13 +58,13 @@ public class GreyScaleMapreduce {
     }
 
     public static class ImgGreyMapper extends OpenCVMapper<Text, BytesWritable, Text, BytesWritable> {
-        private final Logger logger = LoggerFactory.getLogger(ImgGreyMapper.class);
+        //private final Logger logger = LoggerFactory.getLogger(ImgGreyMapper.class);
 
         protected void map(Text key, BytesWritable value, Context context) throws IOException, InterruptedException {
 
             // Create input stream
-            logger.info("map1");
-            BufferedImageWritable image2 = new BufferedImageWritable(new BufferedImage(100,100,BufferedImage.TYPE_BYTE_GRAY));
+            //logger.info("map1");
+            //BufferedImageWritable image2 = new BufferedImageWritable(new BufferedImage(100,100,BufferedImage.TYPE_BYTE_GRAY));
             /*ImageInputStream inputIO = ImageIO.createImageInputStream(new ByteArrayInputStream(value.getBytes()));
             BufferedImage image = null;
 
