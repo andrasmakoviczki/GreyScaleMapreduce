@@ -86,7 +86,6 @@ public class GreyScaleMapreduce {
                         reader.setInput(inputIO);
                         ImageReadParam param = reader.getDefaultReadParam();
                         bImageFromConvert = reader.read(0, param);
-                        int numThumbs = reader.getNumThumbnails(0);
                     } finally {
                         // Dispose reader
                         reader.dispose();
